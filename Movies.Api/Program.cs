@@ -2,7 +2,6 @@ using Movies.Application;
 using Movies.Application.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
