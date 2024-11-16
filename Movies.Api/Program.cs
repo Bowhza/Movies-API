@@ -3,7 +3,6 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Movies.Api;
 using Movies.Api.Auth;
 using Movies.Api.Health;
 using Movies.Api.Mapping;
@@ -55,8 +54,22 @@ builder.Services.AddApiVersioning(x =>
     x.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
 }).AddMvc().AddApiExplorer();
 
+//Add response caching
+//builder.Services.AddResponseCaching();
+
+//Add Output caching
+builder.Services.AddOutputCache(x =>
+{
+    x.AddBasePolicy(c => c.Cache());
+    x.AddPolicy("MovieCache", c => c.Cache()
+        .Expire(TimeSpan.FromMinutes(1))
+        .SetVaryByQuery(new[] { "title", "year", "sortBy", "page", "pageSize" })
+        .Tag("movies"));
+});
+
 builder.Services.AddControllers();
 
+//Add Health Checks
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
 
@@ -92,6 +105,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//If Using CORS, it needs to come before response/output caching.
+//app.UseCors()
+//app.UseResponseCaching();
+app.UseOutputCache();
 
 app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
