@@ -1,0 +1,11 @@
+# Web Api with Controllers
+- Docker Compose.
+- PostgreSQL for the database.
+- Slugs for routes.
+- FluentValidation.
+- JWT Authentication.
+- Role based Authorization.
+- Filtering, Pagination and Sorting.
+- Swagger for API Documentation.
+- API/Database health checks.
+- Response and output caching.
