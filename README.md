@@ -1,6 +1,6 @@
 # Web Api with Controllers
-- Docker Compose.
-- PostgreSQL for the database.
+- Docker Compose with PostgreSQL for the database.
+- Dapper for SQL Queries.
 - Slugs for routes.
 - FluentValidation.
 - JWT Authentication.
